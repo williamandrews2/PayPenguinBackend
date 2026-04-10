@@ -5,28 +5,28 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
 exports.register = async (req, res) => {
-  const { username, password } = req.body;
+  const { firstName, lastName, username, password } = req.body;
 
   try {
-    // Check if username is already taken
-    const existingUser = await prisma.user.findUnique({ where: { username } });
+    const existingUser = await prisma.user.findUnique({
+      where: { username: username },
+    });
 
     if (existingUser) {
       return res.status(400).json({ message: "Username already taken" });
     }
 
-    // Hash the password
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // Create the user in the database
     const user = await prisma.user.create({
       data: {
+        firstName,
+        lastName,
         username,
         password: hashedPassword,
       },
     });
 
-    // Sign a JWT so they're logged in immediately after registering
     const token = jwt.sign(
       { id: user.id, username: user.username },
       process.env.JWT_SECRET,
@@ -37,10 +37,13 @@ exports.register = async (req, res) => {
       token,
       user: {
         id: user.id,
+        firstName: user.firstName,
+        lastName: user.lastName,
         username: user.username,
       },
     });
   } catch (err) {
+    console.error(err);
     res.status(500).json({ message: "Something went wrong" });
   }
 };

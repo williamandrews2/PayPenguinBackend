@@ -1,6 +1,6 @@
 const jwt = require("jsonwebtoken");
 
-// use this to protect any routes, such as bill routes
+// use this to protect any routes with JWT, such as bill routes
 const protect = (req, res, next) => {
   const authHeader = req.headers.authorization;
 
