@@ -14,11 +14,14 @@ app.use(passport.initialize());
 
 // Routes
 const authRouter = require("./routes/auth");
+const billsRouter = require("./routes/bills");
 
 app.use("/api/auth", authRouter);
+app.use("/api/bills", billsRouter);
 
 // basic error handler
 app.use((err, req, res, next) => {
+  s;
   console.error(err.stack);
   res.status(500).json({ message: "Something went wrong" });
 });

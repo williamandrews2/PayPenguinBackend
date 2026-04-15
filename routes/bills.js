@@ -1,6 +1,6 @@
-const billsRouter = require("express");
-const billsRouter = billsRouter();
-const protect = require("../middleware/auth");
+const { Router } = require("express");
+const billsRouter = Router();
+const { protect } = require("../middleware/auth");
 
 const {
   getBills,
@@ -8,7 +8,7 @@ const {
   updateBill,
   deleteBill,
   togglePaid,
-} = require("../controllers/bills.controller");
+} = require("../controllers/billsController");
 
 billsRouter.get("/", protect, getBills);
 billsRouter.post("/", protect, createBill);
