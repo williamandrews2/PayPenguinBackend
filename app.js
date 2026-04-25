@@ -4,21 +4,22 @@ const cors = require("cors");
 const passport = require("./config/passport");
 const app = express();
 
-// PORT variable
 const PORT = process.env.PORT || 3000;
 
-// Middleware
+const corsOptions = {
+  origin: "https://paypenguin.vercel.app",
+  methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+  credentials: true,
+};
+
+// CORS
+app.use(cors(corsOptions));
+app.options("*", cors(corsOptions)); // handle preflight requests
+
+// middleware
 app.use(express.json());
 app.use(passport.initialize());
-
-// cors
-app.use(
-  cors({
-    origin: "https://paypenguin.vercel.app",
-    methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
-    allowedHeaders: ["Content-Type", "Authorization"],
-  }),
-);
 
 // Routes
 const authRouter = require("./routes/auth");
@@ -34,11 +35,8 @@ app.use((err, req, res, next) => {
 });
 
 if (process.env.NODE_ENV !== "production") {
-  // start the server
   app.listen(PORT, (error) => {
-    if (error) {
-      throw error;
-    }
+    if (error) throw error;
     console.log(`Server running on port ${PORT}`);
   });
 }
