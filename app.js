@@ -21,7 +21,6 @@ app.use("/api/bills", billsRouter);
 
 // basic error handler
 app.use((err, req, res, next) => {
-  s;
   console.error(err.stack);
   res.status(500).json({ message: "Something went wrong" });
 });
