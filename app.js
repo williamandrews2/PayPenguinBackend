@@ -12,6 +12,15 @@ app.use(cors());
 app.use(express.json());
 app.use(passport.initialize());
 
+// cors
+app.use(
+  cors({
+    origin: "https://paypenguin.vercel.app",
+    methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+  }),
+);
+
 // Routes
 const authRouter = require("./routes/auth");
 const billsRouter = require("./routes/bills");
