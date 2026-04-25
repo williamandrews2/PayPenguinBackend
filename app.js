@@ -26,10 +26,12 @@ app.use((err, req, res, next) => {
   res.status(500).json({ message: "Something went wrong" });
 });
 
-// start the server
-app.listen(PORT, (error) => {
-  if (error) {
-    throw error;
-  }
-  console.log(`Server running on port ${PORT}`);
-});
+if (process.env.NODE_ENV !== "production") {
+  // start the server
+  app.listen(PORT, (error) => {
+    if (error) {
+      throw error;
+    }
+    console.log(`Server running on port ${PORT}`);
+  });
+}
