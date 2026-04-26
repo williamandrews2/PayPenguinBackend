@@ -6,8 +6,16 @@ const app = express();
 
 const PORT = process.env.PORT || 3000;
 
-// CORS
-app.use(cors());
+const corsOptions = {
+  origin: "https://paypenguin.vercel.app",
+  methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+  credentials: true,
+};
+
+// CORS must be first
+app.use(cors(corsOptions));
+app.options("*", cors(corsOptions)); // handle preflight requests
 
 // middleware
 app.use(express.json());
