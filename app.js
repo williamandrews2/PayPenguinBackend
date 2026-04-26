@@ -15,7 +15,6 @@ const corsOptions = {
 
 // CORS must be first
 app.use(cors(corsOptions));
-app.options("*", cors(corsOptions)); // handle preflight requests
 
 // middleware
 app.use(express.json());
