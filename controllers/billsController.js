@@ -33,7 +33,7 @@ const createBill = async (req, res) => {
 
 // PUT /api/bills/:id
 const updateBill = async (req, res) => {
-  const { name, amount, dueDate } = req.body;
+  const { name, amount, dueDate, isPaid } = req.body;
 
   try {
     // Make sure the bill belongs to the logged in user
@@ -47,7 +47,12 @@ const updateBill = async (req, res) => {
 
     const bill = await prisma.bill.update({
       where: { id: req.params.id },
-      data: { name, amount, dueDate: new Date(dueDate) },
+      data: {
+        name,
+        amount,
+        dueDate: new Date(dueDate),
+        isPaid: isPaid !== undefined ? isPaid : existing.isPaid,
+      },
     });
     res.json(bill);
   } catch (err) {
