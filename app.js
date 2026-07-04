@@ -6,8 +6,18 @@ const app = express();
 
 const PORT = process.env.PORT || 3000;
 
+// whitelist array from .env
+const allowedOrigins = process.env.ALLOWED_ORIGINS?.split(",") || [];
+
 const corsOptions = {
-  origin: "https://paypenguin.vercel.app",
+  origin: function (origin, callback) {
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.includes(origin)) {
+      return callback(null, true);
+    } else {
+      return callback(new Error("Not allowed by CORS"));
+    }
+  },
   methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization"],
   credentials: true,
